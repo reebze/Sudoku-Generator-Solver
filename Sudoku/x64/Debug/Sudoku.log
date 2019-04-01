@@ -1,0 +1,5 @@
+﻿  MyForm.cpp
+c:\users\reebze\source\repos\sudoku\sudoku\myform.cpp(6): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+  .NETFramework,Version=v4.6.1.AssemblyAttributes.cpp
+  MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+LINK : fatal error LNK1561: Єюўър тїюфр фюыцэр с√Є№ юяЁхфхыхэр

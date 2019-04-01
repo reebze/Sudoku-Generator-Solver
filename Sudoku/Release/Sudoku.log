@@ -1,0 +1,4 @@
+﻿  MyForm.cpp
+c:\users\reebze\source\repos\sudoku\sudoku\myform.h(463): warning C4101: ex: неиспользованная локальная переменная
+c:\users\reebze\source\repos\sudoku\sudoku\myform.cpp(6): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+  Sudoku.vcxproj -> C:\Users\Reebze\source\repos\Sudoku\Release\Sudoku.exe
