@@ -209,6 +209,7 @@ namespace Sudoku {
 			this->MaximizeBox = false;
 			this->Name = L"MyForm";
 			this->Text = L"Sudoku";
+			this->TopMost = true;
 			this->Load += gcnew System::EventHandler(this, &MyForm::Form1_Activated);
 			this->groupBox2->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
@@ -221,11 +222,6 @@ namespace Sudoku {
 	{
 		int size = 9;
 
-		int **mass = new int *[size];
-		for (int i = 0; i < size; i++) {
-			mass[i] = new int[size];
-		}
-
 		dataGridView1->ColumnCount = size;
 		dataGridView1->RowCount = size;
 
@@ -236,19 +232,14 @@ namespace Sudoku {
 			dataGridView1->Columns[i]->Width = 67;
 		}
 
-		for (int i = 0; i < 9; i++)
-		{
-			delete[] mass[i];
-		}
-		delete[] mass;
 	}
 	private: bool used_in_row(int grid[9][9], int row, int num)
 	{
-		for (int col = 0; col < 9; col++)
-			if (grid[row][col] == num)
-			{
+		for (int col = 0; col < 9; col++) {
+			if (grid[row][col] == num) {
 				return true;
 			}
+		}
 		return false;
 	}
 	private: bool used_in_col(int grid[9][9], int col, int num)
@@ -262,12 +253,13 @@ namespace Sudoku {
 	}
 	private: bool used_in_box(int grid[9][9], int box_start_rpw, int box_start_col, int num)
 	{
-		for (int row = 0; row < 3; row++)
-			for (int col = 0; col < 3; col++)
-				if (grid[row + box_start_rpw][col + box_start_col] == num)
-				{
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				if (grid[row + box_start_rpw][col + box_start_col] == num) {
 					return true;
 				}
+			}
+		}
 		return false;
 	}
 	private: bool is_safe(int grid[9][9], int row, int col, int num)
@@ -278,18 +270,18 @@ namespace Sudoku {
 	}
 	private: std::pair <int, int> get_unassigned_location(int grid[9][9])
 	{
-		for (int row = 0; row < 9; row++)
-			for (int col = 0; col < 9; col++)
-				if (grid[row][col] == 0)
-				{
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				if (grid[row][col] == 0) {
 					return std::make_pair(row, col);
 				}
+			}
+		}
 		return GRID_FULL;
 	}
 	private: bool solve_soduko(int grid[9][9])
 	{
-		if (GRID_FULL == get_unassigned_location(grid))
-		{
+		if (GRID_FULL == get_unassigned_location(grid)) {
 			return true;
 		}
 
@@ -297,14 +289,11 @@ namespace Sudoku {
 		int row = row_and_col.first;
 		int col = row_and_col.second;
 
-		for (int num = 1; num <= 9; num++)
-		{
-			if (is_safe(grid, row, col, num))
-			{
+		for (int num = 1; num <= 9; num++) {
+			if (is_safe(grid, row, col, num)) {
 				grid[row][col] = num;
 
-				if (solve_soduko(grid))
-				{
+				if (solve_soduko(grid)) {
 					return true;
 				}
 
@@ -318,10 +307,8 @@ namespace Sudoku {
 	}
 	private: void trans(int grid[9][9]) {
 		int tmp;
-		for (int i = 0; i < 9; i++)
-		{
-			for (int j = i; j < 9; j++)
-			{
+		for (int i = 0; i < 9; i++) {
+			for (int j = i; j < 9; j++) {
 				tmp = grid[i][j];
 				grid[i][j] = grid[j][i];
 				grid[j][i] = tmp;
@@ -386,6 +373,34 @@ namespace Sudoku {
 			j++;
 		}
 	}
+	private: bool check(int grid[9][9]) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				int num = grid[i][j];
+				if (num != 0) {
+					for (int col = 0; col < 9; col++) {
+						if (num == grid[i][col] && (col != j)) {
+							return true;
+						}
+					}
+					for (int row = 0; row < 9; row++) {
+						if (num == grid[row][j] && row != i) {
+							return true;
+						}
+					}
+					int box_start_row = i - i % 3;
+					int box_start_col = j - j % 3;
+					for (int row = 0; row < 3; row++) {
+						for (int col = 0; col < 3; col++) {
+							if (grid[row + box_start_row][col + box_start_col] == num && (i != row + box_start_row && j != col + box_start_col)) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	private: System::Void groupBox1_Enter(System::Object^  sender, System::EventArgs^  e) {
 	}
 
@@ -397,10 +412,8 @@ namespace Sudoku {
 	private: System::Void dataGridView1_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 	}
 	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-		for (int i = 0; i < 9; i++)
-		{
-			for (int j = 0; j < 9; j++)
-			{
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
 				dataGridView1->Rows[j]->Cells[i]->Value = "";
 			}
 		}
@@ -431,7 +444,10 @@ namespace Sudoku {
 				}
 			}
 		}
-
+		if (check(grid)) {
+			MessageBox::Show("Некорректное судоку", "Ошибка");
+			return;
+		}
 		if (checker == 0) {
 			MessageBox::Show("Судоку и так решено", "Ошибка");
 		}
@@ -455,14 +471,12 @@ namespace Sudoku {
 	private: System::Void dataGridView1_CellEndEdit(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 		try {
 			System::Int32^ Int32;
-			//Пробуем сконвертировать значение ячейки в System::Int32
 			Int32 = System::Convert::ToInt32(this->dataGridView1->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Value);
 			System::Char^ Char;
 			Char = System::Convert::ToChar(this->dataGridView1->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Value);
 		}
 		catch (Exception^ ex) {
-			//Если при конвертировании возникает ошибка - показываем окно ошибки и стираем значение ячейки
-			MessageBox::Show("Пожалуйста, введите числа от 0 до 9", "Ошибка");
+			MessageBox::Show("Пожалуйста, введите цифру", "Ошибка");
 			dataGridView1->CurrentCell->Value = "";
 		}
 	}

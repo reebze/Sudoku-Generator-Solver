@@ -1,4 +1,5 @@
 ﻿  MyForm.cpp
-c:\users\reebze\source\repos\sudoku\sudoku\myform.h(463): warning C4101: ex: неиспользованная локальная переменная
+c:\users\reebze\source\repos\sudoku\sudoku\myform.h(478): warning C4101: ex: неиспользованная локальная переменная
 c:\users\reebze\source\repos\sudoku\sudoku\myform.cpp(6): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+c:\users\reebze\source\repos\sudoku\sudoku\myform.h(403): warning C4715: Sudoku::MyForm::check: значение возвращается не при всех путях выполнения
   Sudoku.vcxproj -> C:\Users\Reebze\source\repos\Sudoku\Release\Sudoku.exe
